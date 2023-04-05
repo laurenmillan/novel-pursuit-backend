@@ -15,7 +15,16 @@
 		"by_statement": {
 			"type": "array",
 			"items": {
-				"type": "string"
+				"type": "object",
+				"properties": {
+					"author_name": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					}
+				},
+				"required": [ "author_name", "type" ]
 			}
 		},
 		"publish_date": {
