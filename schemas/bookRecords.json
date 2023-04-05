@@ -1,39 +1,41 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"title": "bookRecords",
-	"description": "A JSON schema representing book records using the Open Library API.",
 	"type": "object",
 	"properties": {
-		"title": {
-			"type": "string",
-			"description": "The title of the book."
+		"key": {
+			"type": "string"
 		},
-		"author_name": {
-			"type": "string",
-			"description": "The name of the author."
+		"type": {
+			"type": "string"
+		},
+		"title": {
+			"type": "string"
+		},
+		"by_statement": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
 		},
 		"publish_date": {
-			"type": "string",
-			"format": "date",
-			"description": "The publication date of the book."
-		},
-		"publisher": {
-			"type": "string",
-			"description": "The name of the publisher."
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
 		},
 		"isbn": {
-			"type": "string",
-			"description": "The ISBN of the book."
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
 		},
 		"description": {
-			"type": "string",
-			"description": "A brief description of the book."
+			"type": "string"
 		},
-		"cover_image": {
-			"type": "string",
-			"format": "uri",
-			"description": "The URL of the cover image."
+		"cover_url": {
+			"type": "string"
 		}
 	},
-	"required": [ "title", "author_name", "publish_date", "publisher", "isbn", "description", "cover_image" ]
+	"required": [ "key", "type", "title", "by_statement", "publish_date", "isbn", "description", "cover_url" ]
 }
