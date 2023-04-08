@@ -154,6 +154,42 @@ class Book {
 
 		if (!book) throw new NotFoundError(`No book: ${id}`);
 	}
+
+	/** Save a book for a user: (username, bookId) => undefined
+ *
+ * Throws NotFoundError if either user or book not found.
+ **/
+	static async saveBook(username, bookId) {
+		const preCheck = await db.query(`SELECT 1 FROM users WHERE username=$1`, [ username ]);
+		const user = preCheck.rows[0];
+		if (!user) throw new NotFoundError(`No user: ${username}`);
+
+		const preCheck2 = await db.query(`SELECT 1 FROM books WHERE id=$1`, [ bookId ]);
+		const book = preCheck2.rows[0];
+		if (!book) throw new NotFoundError(`No book: ${bookId}`);
+
+		await db.query(
+			`INSERT INTO bookmarks (username, book_id)
+        VALUES ($1, $2)`,
+			[ username, bookId ]
+		);
+	}
+
+	/** Remove a saved book for a user: (username, bookId) => undefined
+ *
+ * Throws NotFoundError if not found.
+ **/
+	static async removeBook(username, bookId) {
+		const result = await db.query(
+			`DELETE FROM bookmarks
+        WHERE username = $1 AND book_id = $2
+        RETURNING book_id`,
+			[ username, bookId ]
+		);
+		const book = result.rows[0];
+
+		if (!book) throw new NotFoundError(`No book ${bookId} for user ${username}`);
+	}
 }
 
 module.exports = Book;
