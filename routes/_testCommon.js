@@ -2,7 +2,7 @@
 
 const db = require('../db.js');
 const User = require('../models/user');
-// const Book = require('../models/book');
+const Book = require('../models/book');
 const { createToken } = require('../helpers/tokens');
 
 async function commonBeforeAll() {
@@ -32,6 +32,36 @@ async function commonBeforeAll() {
 		email: 'user3@user.com',
 		password: 'password3',
 		isAdmin: false
+	});
+
+	await Book.create({
+		title: 'The Great Gatsby',
+		author_name: 'F. Scott Fitzgerald',
+		by_statement: 'by F. Scott Fitzgerald',
+		publish_date: '1925-04-10',
+		isbn: [ '978-0-09-954153-0', '978-1-000-00000-1' ],
+		description: 'The Great Gatsby is a novel by American author F. Scott Fitzgerald.',
+		cover_url: 'https://www.example.com/covers/great-gatsby.jpg'
+	});
+
+	await Book.create({
+		title: 'To Kill a Mockingbird',
+		author_name: 'Harper Lee',
+		by_statement: 'by Harper Lee',
+		publish_date: '1960-07-11',
+		isbn: [ '978-0-440-32924-0' ],
+		description: 'To Kill a Mockingbird is a novel by Harper Lee.',
+		cover_url: 'https://www.example.com/covers/to-kill-a-mockingbird.jpg'
+	});
+
+	await Book.create({
+		title: '1984',
+		author_name: 'George Orwell',
+		by_statement: 'by George Orwell',
+		publish_date: '1949-06-08',
+		isbn: [ '978-0-14-118776-1' ],
+		description: '1984 is a dystopian novel by George Orwell.',
+		cover_url: 'https://www.example.com/covers/1984.jpg'
 	});
 }
 

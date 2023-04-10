@@ -1,10 +1,6 @@
-// const BASE_URL = 'https://openlibrary.org/search.json?author=tolkien&sort=new';
-
-// module.exports = { BASE_URL };
-
 import axios from 'axios';
 
-const BASE_URL = 'https://openlibrary.org/search.json?author=tolkien&sort=new';
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3001';
 
 /** API Class.
  *
@@ -47,22 +43,39 @@ class LibraryApi {
 
 	/** Get details on a book by id. */
 
-	static async getCompany(id) {
-		let res = await this.request(`books/${id}`);
-		return res.book;
+	static async getBook(id) {
+		const LIBRARY_BOOK_URL = `https://openlibrary.org/works/${id}.json`;
+		const res = await axios.get(LIBRARY_BOOK_URL);
+		return res.data;
 	}
 
 	/** Get list of books (filtered by title if not undefined). */
 
 	static async getBooks(title) {
-		let res = await this.request('books', { title });
-		return res.books;
+		const LIBRARY_SEARCH_URL = 'https://openlibrary.org/search.json';
+		const res = await axios.get(LIBRARY_SEARCH_URL, {
+			params: {
+				title: title,
+				limit: 10 // Set a limit to control the number of results
+			}
+		});
+		return res.data.docs;
 	}
 
 	/** Bookmark a book */
 
 	static async bookmarks(username, id) {
-		await this.request(`users/${username}/books/${id}`, {}, 'post');
+		const bookDetails = await this.getBook(id);
+
+		// Process book details and extract the required information
+		const processedBookDetails = {
+			id: bookDetails.id,
+			title: bookDetails.title,
+			author_name: bookDetails.author_name,
+			cover_url: bookDetails.cover_url
+		};
+
+		await this.request(`users/${username}/books/${id}`, processedBookDetails, 'post');
 	}
 
 	/** Get token for login from username, password. */

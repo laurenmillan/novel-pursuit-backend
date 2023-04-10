@@ -20,7 +20,8 @@ describe('POST /auth/token', function() {
 			password: 'password1'
 		});
 		expect(resp.body).toEqual({
-			token: expect.any(String)
+			token: expect.any(String),
+			error: undefined
 		});
 	});
 

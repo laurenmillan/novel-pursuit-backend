@@ -105,8 +105,8 @@ class User {
 
 	/** Given a username, return data about user.
    *
-   * Returns { username, first_name, last_name, is_admin, books }
-   *   where books is { id, title, company_handle, company_name, state }
+   * Returns { username, first_name, last_name, is_admin, bookmarks }
+   *   where bookmarks is an array of book IDs
    *
    * Throws NotFoundError if user not found.
    **/
@@ -128,13 +128,13 @@ class User {
 		if (!user) throw new NotFoundError(`No user: ${username}`);
 
 		const userBookmarksRes = await db.query(
-			`SELECT b.id
+			`SELECT b.book_id
         	FROM bookmarks AS b
         	WHERE b.username = $1`,
 			[ username ]
 		);
 
-		user.bookmarks = userBookmarksRes.rows.map((b) => b.id);
+		user.bookmarks = userBookmarksRes.rows.map((b) => b.book_id);
 		return user;
 	}
 

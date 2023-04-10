@@ -19,7 +19,7 @@ describe('authenticate', function() {
 			username: 'u1',
 			firstName: 'U1F',
 			lastName: 'U1L',
-			email: 'u1@email.com',
+			email: 'user1@user.com',
 			isAdmin: false
 		});
 	});
@@ -106,14 +106,21 @@ describe('findAll', function() {
 				username: 'u1',
 				firstName: 'U1F',
 				lastName: 'U1L',
-				email: 'u1@email.com',
+				email: 'user1@user.com',
 				isAdmin: false
 			},
 			{
 				username: 'u2',
 				firstName: 'U2F',
 				lastName: 'U2L',
-				email: 'u2@email.com',
+				email: 'user2@user.com',
+				isAdmin: false
+			},
+			{
+				username: 'u3',
+				firstName: 'U3F',
+				lastName: 'U3L',
+				email: 'user3@user.com',
 				isAdmin: false
 			}
 		]);
@@ -129,8 +136,9 @@ describe('get', function() {
 			username: 'u1',
 			firstName: 'U1F',
 			lastName: 'U1L',
-			email: 'u1@email.com',
-			isAdmin: false
+			email: 'user1@user.com',
+			isAdmin: false,
+			bookmarks: []
 		});
 	});
 
@@ -170,7 +178,7 @@ describe('update', function() {
 			username: 'u1',
 			firstName: 'U1F',
 			lastName: 'U1L',
-			email: 'u1@email.com',
+			email: 'user1@user.com',
 			isAdmin: false
 		});
 		const found = await db.query("SELECT * FROM users WHERE username = 'u1'");
