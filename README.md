@@ -1,4 +1,4 @@
-# Backend Open Library App
+# Backend Open Library App 
 
 This is a Node.js and Express backend app that provides RESTful API for interacting with a database. The app is built using the following:
 
@@ -8,7 +8,7 @@ This is a Node.js and Express backend app that provides RESTful API for interact
 
 * PostgreSQL
 
-## Installation
+## Installation 💻
 
 Use the package manager [npm](https://www.npmjs.com) to install the app.
 
