@@ -43,6 +43,20 @@ router.get('/:id', async function(req, res, next) {
 	}
 });
 
+/** GET /title/:title => { books }
+ *
+ * Returns list of books that match the given title.
+ **/
+
+router.get('/title/:title', async function(req, res, next) {
+	try {
+		const books = await Book.findByTitle(req.params.title);
+		return res.json({ books });
+	} catch (err) {
+		return next(err);
+	}
+});
+
 /** POST /:username/bookmarks/:bookId => { bookmarked: bookId }
  *
  * Returns { bookmarked: bookId }

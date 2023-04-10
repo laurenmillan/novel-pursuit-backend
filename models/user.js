@@ -26,8 +26,8 @@ class User {
                   last_name AS "lastName",
                   email,
                   is_admin AS "isAdmin"
-           FROM users
-           WHERE username = $1`,
+          FROM users
+          WHERE username = $1`,
 			[ username ]
 		);
 
@@ -55,8 +55,8 @@ class User {
 	static async register({ username, password, firstName, lastName, email, isAdmin }) {
 		const duplicateCheck = await db.query(
 			`SELECT username
-           FROM users
-           WHERE username = $1`,
+          FROM users
+          WHERE username = $1`,
 			[ username ]
 		);
 
@@ -68,14 +68,14 @@ class User {
 
 		const result = await db.query(
 			`INSERT INTO users
-           (username,
+          (username,
             password,
             first_name,
             last_name,
             email,
             is_admin)
-           VALUES ($1, $2, $3, $4, $5, $6)
-           RETURNING username, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
+          VALUES ($1, $2, $3, $4, $5, $6)
+          RETURNING username, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
 			[ username, hashedPassword, firstName, lastName, email, isAdmin ]
 		);
 
@@ -96,8 +96,8 @@ class User {
                   last_name AS "lastName",
                   email,
                   is_admin AS "isAdmin"
-           FROM users
-           ORDER BY username`
+          FROM users
+          ORDER BY username`
 		);
 
 		return result.rows;
@@ -114,12 +114,12 @@ class User {
 	static async get(username) {
 		const userRes = await db.query(
 			`SELECT username,
-                  first_name AS "firstName",
-                  last_name AS "lastName",
-                  email,
-                  is_admin AS "isAdmin"
-           FROM users
-           WHERE username = $1`,
+        first_name AS "firstName",
+        last_name AS "lastName",
+        email,
+        is_admin AS "isAdmin"
+          FROM users
+          WHERE username = $1`,
 			[ username ]
 		);
 
@@ -129,8 +129,8 @@ class User {
 
 		const userBookmarksRes = await db.query(
 			`SELECT b.book_id
-        	FROM bookmarks AS b
-        	WHERE b.username = $1`,
+        FROM bookmarks AS b
+        WHERE b.username = $1`,
 			[ username ]
 		);
 
@@ -189,9 +189,9 @@ class User {
 	static async remove(username) {
 		let result = await db.query(
 			`DELETE
-           FROM users
-           WHERE username = $1
-           RETURNING username`,
+          FROM users
+          WHERE username = $1
+          RETURNING username`,
 			[ username ]
 		);
 		const user = result.rows[0];
@@ -208,8 +208,8 @@ class User {
 	static async bookmarkBook(username, bookId) {
 		const preCheck = await db.query(
 			`SELECT id
-           FROM books
-           WHERE id = $1`,
+          FROM books
+          WHERE id = $1`,
 			[ bookId ]
 		);
 		const book = preCheck.rows[0];
@@ -218,8 +218,8 @@ class User {
 
 		const preCheck2 = await db.query(
 			`SELECT username
-           FROM users
-           WHERE username = $1`,
+          FROM users
+          WHERE username = $1`,
 			[ username ]
 		);
 		const user = preCheck2.rows[0];
@@ -228,7 +228,7 @@ class User {
 
 		await db.query(
 			`INSERT INTO bookmarks (book_id, username)
-           VALUES ($1, $2)`,
+          VALUES ($1, $2)`,
 			[ bookId, username ]
 		);
 	}
