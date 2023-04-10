@@ -10,10 +10,11 @@ This is a Node.js and Express backend app that provides RESTful API for interact
 
 ## Installation 💻
 
-* git clone https://github.com/mlauren77/capstone-backend.git
-
 Use the package manager [npm](https://www.npmjs.com) to install the app.
 
+```bash
+git clone https://github.com/mlauren77/capstone-backend.git
+```
 ```bash
 npm install
 ```
