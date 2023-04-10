@@ -19,11 +19,23 @@ npm install
 npm start
 ```
 
-Open http://localhost:3000 to view it in your browser.
+Open http://localhost:3001 to view it in your browser.
+
+## Functionality
+
+* A user can search the app to locate books
+
+* A user can signup and login to "bookmark" (save) a book to their profile
 
 ## Database
 
 The app uses PostgreSQL as its database.
+
+## Testing
+
+```bash
+npm test
+```
 
 ## API
 
