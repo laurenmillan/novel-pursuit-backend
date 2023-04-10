@@ -8,7 +8,7 @@ CREATE DATABASE library;
 \i library-schema.sql
 \i library-seed.sql
 
-\echo 'Delete and recreate library db?'
+\echo 'Delete and recreate library_test db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
 
 DROP DATABASE library_test;
