@@ -1,6 +1,6 @@
 # Backend Open Library App 
 
-This is a Node.js and Express backend app that provides RESTful API for interacting with a database. The app is built using the following:
+This is a Node.js and Express backend app that provides RESTful API for interacting with a database. The app follows the CRUD (Create, Read, Update, Delete) paradigm, allowing users to create, read, update, and delete book data from the database. The app is built using the following:
 
 * Node.js
 
@@ -36,7 +36,9 @@ npm test
 
 * A user can search the app to locate books.
 
-* A user can signup and login to "bookmark" (save) a book to their profile.
+* A user can signup and login to the app.
+
+* A user can view their bookmarked books, and remove any bookmarks they no longer want to keep.
 
 ## Database
 
