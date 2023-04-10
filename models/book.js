@@ -12,6 +12,7 @@ class Book {
    *
    * Returns { id, title, author_name, by_statement, publish_date, isbn, description, cover_url }
    **/
+
 	static async create(data) {
 		const result = await db.query(
 			`INSERT INTO books (title,
@@ -21,8 +22,8 @@ class Book {
                             isbn,
                             description,
                             cover_url)
-          VALUES ($1, $2, $3, $4, $5, $6, $7)
-          RETURNING id, title, author_name, by_statement, publish_date, isbn, description, cover_url`,
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING id, title, author_name, by_statement, publish_date, isbn, description, cover_url`,
 			[
 				data.title,
 				data.author_name,
@@ -46,6 +47,7 @@ class Book {
    *
    * Returns [{ id, title, author_name, by_statement, publish_date, isbn, description, cover_url }, ...]
    **/
+
 	static async findAll({ title } = {}) {
 		let query = `SELECT id,
                         title,
@@ -80,18 +82,19 @@ class Book {
    *
    * Throws NotFoundError if not found.
    **/
+
 	static async get(id) {
 		const bookRes = await db.query(
 			`SELECT id,
-                  title,
-                  author_name,
-                  by_statement,
-                  publish_date,
-                  isbn,
-                  description,
-                  cover_url
-          FROM books
-          WHERE id = $1`,
+                title,
+                author_name,
+                by_statement,
+                publish_date,
+                isbn,
+                description,
+                cover_url
+        FROM books
+        WHERE id = $1`,
 			[ id ]
 		);
 
@@ -114,14 +117,15 @@ class Book {
    *
    * Throws NotFoundError if not found.
    */
+
 	static async update(id, data) {
 		const { setCols, values } = sqlForPartialUpdate(data, {});
 		const idVarIdx = '$' + (values.length + 1);
 
 		const querySql = `UPDATE books 
-                      SET ${setCols} 
-                      WHERE id = ${idVarIdx} 
-                      RETURNING id, 
+                    SET ${setCols} 
+                    WHERE id = ${idVarIdx} 
+                    RETURNING id, 
                                 title, 
                                 author_name, 
                                 by_statement,
@@ -142,12 +146,13 @@ class Book {
    *
    * Throws NotFoundError if book not found.
    **/
+
 	static async remove(id) {
 		const result = await db.query(
 			`DELETE
-          FROM books
-          WHERE id = $1
-          RETURNING id`,
+        FROM books
+        WHERE id = $1
+        RETURNING id`,
 			[ id ]
 		);
 		const book = result.rows[0];
@@ -159,7 +164,8 @@ class Book {
  *
  * Throws NotFoundError if either user or book not found.
  **/
-	static async saveBook(username, bookId) {
+
+	static async addBookToUser(username, bookId) {
 		const preCheck = await db.query(`SELECT 1 FROM users WHERE username=$1`, [ username ]);
 		const user = preCheck.rows[0];
 		if (!user) throw new NotFoundError(`No user: ${username}`);
@@ -179,6 +185,7 @@ class Book {
  *
  * Throws NotFoundError if not found.
  **/
+
 	static async removeBook(username, bookId) {
 		const result = await db.query(
 			`DELETE FROM bookmarks

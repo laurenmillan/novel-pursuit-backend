@@ -199,13 +199,13 @@ class User {
 		if (!user) throw new NotFoundError(`No user: ${username}`);
 	}
 
-	/** Save book: update db, returns undefined.
+	/** Save book for user's bookmarks: update db, returns undefined.
    *
    * - username: username save book
    * - bookId: book id
    **/
 
-	static async saveBook(username, bookId) {
+	static async bookmarkBook(username, bookId) {
 		const preCheck = await db.query(
 			`SELECT id
            FROM books
