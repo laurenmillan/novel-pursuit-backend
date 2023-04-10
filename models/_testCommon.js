@@ -2,7 +2,6 @@
 
 const db = require('../db.js');
 const User = require('../models/user');
-// const Book = require('../models/book');
 const { createToken } = require('../helpers/tokens');
 
 async function commonBeforeAll() {
@@ -14,6 +13,7 @@ async function commonBeforeAll() {
 		firstName: 'U1F',
 		lastName: 'U1L',
 		email: 'user1@user.com',
+		favTeamId: 1,
 		password: 'password1',
 		isAdmin: false
 	});
@@ -22,6 +22,7 @@ async function commonBeforeAll() {
 		firstName: 'U2F',
 		lastName: 'U2L',
 		email: 'user2@user.com',
+		favTeamId: 1,
 		password: 'password2',
 		isAdmin: false
 	});
@@ -29,6 +30,7 @@ async function commonBeforeAll() {
 		username: 'u3',
 		firstName: 'U3F',
 		lastName: 'U3L',
+		favTeamId: 1,
 		email: 'user3@user.com',
 		password: 'password3',
 		isAdmin: false

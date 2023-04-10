@@ -113,7 +113,7 @@ router.delete('/:username', ensureCorrectUserOrAdmin, async function(req, res, n
 	}
 });
 
-/** POST /[username]/books/[id]  { state } => { application }
+/** POST /[username]/books/[id]  
  *
  * Returns {"saved": bookId}
  *

@@ -1,3 +1,5 @@
+-- both test users have the password "password"
+
 -- Seed data for books table
 INSERT INTO books (title, author_name, by_statement, publish_date, isbn, description, cover_url)
 VALUES
@@ -8,14 +10,13 @@ VALUES
 -- Seed data for users table
 INSERT INTO users (username, password, first_name, last_name, email, is_admin)
 VALUES
-    ('johndoe', 'password', 'John', 'Doe', 'johndoe@example.com', FALSE),
-    ('janedoe', 'password', 'Jane', 'Doe', 'janedoe@example.com', TRUE),
-    ('bobsmith', 'password', 'Bob', 'Smith', 'bobsmith@example.com', FALSE);
+    ('testuser', '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q', 'Test', 'User', 'joel@joelburton.com', FALSE),
+    ('testadmin', '$2b$12$AZH7virni5jlTTiGgEg4zu3lSvAw68qVEfSIOjJ3RqtbJbdW/Oi5q', 'Jane', 'Admin!', 'joel@joelburton.com', TRUE),
+    
 
 -- Seed data for bookmarks table
 INSERT INTO bookmarks (username, book_id)
 VALUES
-    ('johndoe', 1),
-    ('janedoe', 2),
-    ('bobsmith', 1),
-    ('bobsmith', 3);
+    ('testuser', 1),
+    ('testadmin', 2),
+    ('testadmin', 1);

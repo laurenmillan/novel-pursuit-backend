@@ -127,14 +127,14 @@ class User {
 
 		if (!user) throw new NotFoundError(`No user: ${username}`);
 
-		const userApplicationsRes = await db.query(
-			`SELECT a.book_id
-           FROM applications AS a
-           WHERE a.username = $1`,
+		const userBookmarksRes = await db.query(
+			`SELECT b.id
+        	FROM bookmarks AS b
+        	WHERE b.username = $1`,
 			[ username ]
 		);
 
-		user.applications = userApplicationsRes.rows.map((a) => a.book_id);
+		user.bookmarks = userBookmarksRes.rows.map((b) => b.id);
 		return user;
 	}
 
@@ -227,7 +227,7 @@ class User {
 		if (!user) throw new NotFoundError(`No username: ${username}`);
 
 		await db.query(
-			`INSERT INTO applications (book_id, username)
+			`INSERT INTO bookmarks (book_id, username)
            VALUES ($1, $2)`,
 			[ bookId, username ]
 		);
