@@ -10,37 +10,41 @@ This is a Node.js and Express backend app that provides RESTful API for interact
 
 ## Installation 💻
 
+* git clone https://github.com/mlauren77/capstone-backend.git
+
 Use the package manager [npm](https://www.npmjs.com) to install the app.
 
 ```bash
 npm install
 ```
 ```bash
-npm start
+node server.js
 ```
 
 Open http://localhost:3001 to view it in your browser.
 
-## Functionality
-
-* A user can search the app to locate books
-
-* A user can signup and login to "bookmark" (save) a book to their profile
-
-## Database
-
-The app uses PostgreSQL as its database.
-
 ## Testing
+
+To run the automated tests, use the folowing command:
 
 ```bash
 npm test
 ```
 
+## Functionality
+
+* A user can search the app to locate books.
+
+* A user can signup and login to "bookmark" (save) a book to their profile.
+
+## Database
+
+The app uses PostgreSQL as its database. 
+
 ## API
 
-You can find the Open Library API here [Open Library](https://openlibrary.org/dev/docs/api/search)
+You can find the Open Library API documentation at [Open Library](https://openlibrary.org/dev/docs/api/search)
 
 ## Contributing
 
-Contributions are welcome! 
+Contributions are welcome! Please follow the [GitHub flow](https://guides.github.com/introduction/flow/) when making contributions.
