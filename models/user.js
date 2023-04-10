@@ -232,6 +232,21 @@ class User {
 			[ bookId, username ]
 		);
 	}
+
+	/** Given a username, returns an array of book IDs representing that user's bookmarks.
+   *
+   * - username: The username of the user to retrieve bookmarks for
+   **/
+
+	static async getBookmarks(username) {
+		const result = await db.query(
+			`SELECT b.book_id
+    FROM bookmarks AS b
+    WHERE b.username = $1`,
+			[ username ]
+		);
+		return result.rows.map((row) => row.book_id);
+	}
 }
 
 module.exports = User;

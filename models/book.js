@@ -43,20 +43,13 @@ class Book {
    * Find all books (optional filter on searchFilters).
    *
    * searchFilters (all optional):
-   * - title (will find case-insensitive, partial matches)
+   * - title, author, isbn (will find case-insensitive, partial matches)
    *
    * Returns [{ id, title, author_name, by_statement, publish_date, isbn, description, cover_url }, ...]
    **/
 
-	static async findAll({ title } = {}) {
-		let query = `SELECT id,
-                        title,
-                        author_name,
-                        by_statement,
-                        publish_date,
-                        isbn,
-                        description,
-                        cover_url
+	static async findAll({ title, author, isbn } = {}) {
+		let query = `SELECT id, title, author_name, by_statement, publish_date, isbn, description, cover_url
                 FROM books`;
 		let whereExpressions = [];
 		let queryValues = [];
@@ -64,6 +57,16 @@ class Book {
 		if (title !== undefined) {
 			queryValues.push(`%${title}%`);
 			whereExpressions.push(`title ILIKE $${queryValues.length}`);
+		}
+
+		if (author !== undefined) {
+			queryValues.push(`%${author}%`);
+			whereExpressions.push(`author_name ILIKE $${queryValues.length}`);
+		}
+
+		if (isbn !== undefined) {
+			queryValues.push(`${isbn}`);
+			whereExpressions.push(`isbn = $${queryValues.length}`);
 		}
 
 		if (whereExpressions.length > 0) {
@@ -103,6 +106,26 @@ class Book {
 		if (!book) throw new NotFoundError(`No book: ${id}`);
 
 		return book;
+	}
+
+	/**
+   * Search books by author, ISBN, or other criteria
+   * 
+   * query: a search query to match against book titles, author names, or ISBNs
+   * ILIKE: used to search for a pattern in a column that may contain mixed letter casings.
+   * 
+   * Returns [{ id, title, author_name, by_statement, publish_date, isbn, description, cover_url }, ...]
+   */
+	static async search(query) {
+		const booksRes = await db.query(
+			`SELECT id, title, author_name, by_statement, publish_date, isbn, description, cover_url
+        FROM books
+        WHERE title ILIKE $1
+          OR author_name ILIKE $1
+          OR isbn = $1`,
+			[ `%${query}%` ]
+		);
+		return booksRes.rows;
 	}
 
 	/**
