@@ -16,7 +16,12 @@ const router = express.Router();
 
 router.get('/', async function(req, res, next) {
 	try {
-		const books = await Book.findAll();
+		let books;
+		if (req.query.title) {
+			books = await Book.findAll({ where: { title: req.query.title } });
+		} else {
+			books = await Book.findAll();
+		}
 		return res.json({ books });
 	} catch (err) {
 		return next(err);

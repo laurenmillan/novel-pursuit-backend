@@ -87,23 +87,18 @@ class Book {
    **/
 
 	static async get(id) {
-		const bookRes = await db.query(
-			`SELECT id,
-                title,
-                author_name,
-                by_statement,
-                publish_date,
-                isbn,
-                description,
-                cover_url
-        FROM books
-        WHERE id = $1`,
+		const result = await db.query(
+			`SELECT id, title, author_name, by_statement, publish_date, isbn, description, cover_url
+          FROM books
+          WHERE id = $1`,
 			[ id ]
 		);
 
-		const book = bookRes.rows[0];
+		let book = result.rows[0];
 
-		if (!book) throw new NotFoundError(`No book: ${id}`);
+		if (!book) {
+			throw new NotFoundError(`No book with ID ${id}`);
+		}
 
 		return book;
 	}
