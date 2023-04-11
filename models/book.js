@@ -43,12 +43,12 @@ class Book {
    * Find all books (optional filter on searchFilters).
    *
    * searchFilters (all optional):
-   * - title, author, isbn (will find case-insensitive, partial matches)
+   * - title, author_name, isbn (will find case-insensitive, partial matches)
    *
    * Returns [{ id, title, author_name, by_statement, publish_date, isbn, description, cover_url }, ...]
    **/
 
-	static async findAll({ title, author, isbn } = {}) {
+	static async findAll({ title, author_name, isbn } = {}) {
 		let query = `SELECT id, title, author_name, by_statement, publish_date, isbn, description, cover_url
                 FROM books`;
 		let whereExpressions = [];
@@ -59,8 +59,8 @@ class Book {
 			whereExpressions.push(`title ILIKE $${queryValues.length}`);
 		}
 
-		if (author !== undefined) {
-			queryValues.push(`%${author}%`);
+		if (author_name !== undefined) {
+			queryValues.push(`%${author_name}%`);
 			whereExpressions.push(`author_name ILIKE $${queryValues.length}`);
 		}
 
@@ -104,9 +104,9 @@ class Book {
 	}
 
 	/**
-   * Search books by author, ISBN, or other criteria
+   * Search books by author_name, ISBN, or other criteria
    * 
-   * query: a search query to match against book titles, author names, or ISBNs
+   * query: a search query to match against book titles, author_name, or ISBNs
    * ILIKE: used to search for a pattern in a column that may contain mixed letter casings.
    * 
    * Returns [{ id, title, author_name, by_statement, publish_date, isbn, description, cover_url }, ...]

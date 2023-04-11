@@ -2,26 +2,58 @@
 
 /** Routes for books. */
 
+const jsonschema = require('jsonschema');
 const express = require('express');
+const { BadRequestError } = require('../expressError');
 const Book = require('../models/book');
 const { ensureCorrectUserOrAdmin } = require('../middleware/auth');
+const { ensureAdmin } = require('../middleware/auth');
+const bookNewSchema = require('../schemas/bookNew.json');
+const bookSearchSchema = require('../schemas/bookSearch.json');
 
 const router = express.Router();
 
-/** GET / => { books: [ { id, title, author_name, by_statement, publish_date, isbn, description, cover_url }, ... ] }
+/** POST / { book } =>  { book }
  *
- * Returns list of all books.
+ * book should be { title, author_name, by_statement, publish_date, isbn, description, cover_url }
  *
- **/
+ * Returns { id, title, author_name, by_statement, publish_date, isbn, description, cover_url }
+ *
+ * Authorization required: admin
+ */
+
+router.post('/', ensureAdmin, async function(req, res, next) {
+	try {
+		// Validate the request query against the bookNewSchema
+		const validator = jsonschema.validate(req.body, bookNewSchema);
+		if (!validator.valid) {
+			const errs = validator.errors.map((e) => e.stack);
+			throw new BadRequestError(errs);
+		}
+
+		const book = await Book.create(req.body);
+		return res.status(201).json({ book });
+	} catch (err) {
+		return next(err);
+	}
+});
+
+/** GET / =>
+ *   { books: [ { id, title, author_name, by_statement, publish_date, isbn, description, cover_url }, ...] }
+ *
+ * Can provide search filter in query:
+ * - title (will find case-insensitive, partial matches)
+ * - author_name
+ * - by_statement (publisher)
+ * - ibsn
+ * 
+ * Authorization required: none
+ */
 
 router.get('/', async function(req, res, next) {
 	try {
-		let books;
-		if (req.query.title) {
-			books = await Book.findAll({ where: { title: req.query.title } });
-		} else {
-			books = await Book.findAll();
-		}
+		const searchFields = req.query;
+		const books = await Book.findAll(searchFields);
 		return res.json({ books });
 	} catch (err) {
 		return next(err);
@@ -43,47 +75,16 @@ router.get('/:id', async function(req, res, next) {
 	}
 });
 
-/** GET /title/:title => { books }
+/** DELETE /:username/bookmarks/:book_id => { removed: book_id }
  *
- * Returns list of books that match the given title.
- **/
-
-router.get('/title/:title', async function(req, res, next) {
-	try {
-		const books = await Book.findByTitle(req.params.title);
-		return res.json({ books });
-	} catch (err) {
-		return next(err);
-	}
-});
-
-/** POST /:username/bookmarks/:bookId => { bookmarked: bookId }
- *
- * Returns { bookmarked: bookId }
+ * Returns { removed: book_id }
  *
  * Authorization required: admin or same-user-as-:username
  **/
 
-router.post('/:username/bookmarks/:bookId', ensureCorrectUserOrAdmin, async function(req, res, next) {
+router.delete('/:username/bookmarks/:book_id', ensureCorrectUserOrAdmin, async function(req, res, next) {
 	try {
-		const bookId = +req.params.bookId;
-		await Book.saveBook(req.params.username, bookId);
-		return res.status(201).json({ bookmarked: bookId });
-	} catch (err) {
-		return next(err);
-	}
-});
-
-/** DELETE /:username/bookmarks/:bookId => { removed: bookId }
- *
- * Returns { removed: bookId }
- *
- * Authorization required: admin or same-user-as-:username
- **/
-
-router.delete('/:username/bookmarks/:bookId', ensureCorrectUserOrAdmin, async function(req, res, next) {
-	try {
-		const bookId = +req.params.bookId;
+		const bookId = +req.params.book_id;
 		await Book.removeBook(req.params.username, bookId);
 		return res.json({ removed: bookId });
 	} catch (err) {
