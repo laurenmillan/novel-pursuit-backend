@@ -2,8 +2,10 @@ const axios = require('axios');
 const db = require('./db');
 const moment = require('moment');
 
+// node seed.js
+
 async function seedDatabase() {
-  try {
+    try {
     const response = await axios.get('https://openlibrary.org/subjects/history.json');
     const books = response.data.works.map(work => {
     const book = work.title;

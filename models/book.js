@@ -111,6 +111,7 @@ class Book {
    * 
    * Returns [{ id, title, author_name, by_statement, publish_date, isbn, description, cover_url }, ...]
    */
+
 	static async search(query) {
 		const booksRes = await db.query(
 			`SELECT id, title, author_name, by_statement, publish_date, isbn, description, cover_url
