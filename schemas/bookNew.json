@@ -19,7 +19,7 @@
 			"maxLength": 50
 		},
 		"publish_date": {
-			"type": "array",
+			"type": "string",
 			"format": "date"
 		},
 		"isbn": {

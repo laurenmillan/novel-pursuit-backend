@@ -5,7 +5,7 @@ const moment = require('moment');
 // node seed.js
 
 async function seedDatabase() {
-    try {
+  try {
     const response = await axios.get('https://openlibrary.org/subjects/history.json');
     const books = response.data.works.map(work => {
     const book = work.title;
@@ -20,8 +20,8 @@ async function seedDatabase() {
     for (const book of books) {
         await db.query(`
         INSERT INTO books (title, author_name, publish_date, isbn, description, cover_url)
-        VALUES ($1, $2, $3, $4, $5, $6)
-        `, [book.book, book.author, book.year, [], '', book.imageUrl]);
+        VALUES ($1, $2, $3, $4, $5, $6)`, 
+        [book.book, book.author, book.year, [], '', book.imageUrl]);
     }
 
     console.log('Seeding complete!');

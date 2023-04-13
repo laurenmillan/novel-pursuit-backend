@@ -3,13 +3,13 @@
 /** Routes for books. */
 
 const jsonschema = require('jsonschema');
+
 const express = require('express');
 const { BadRequestError } = require('../expressError');
 const Book = require('../models/book');
 const { ensureCorrectUserOrAdmin } = require('../middleware/auth');
 const { ensureAdmin } = require('../middleware/auth');
 const bookNewSchema = require('../schemas/bookNew.json');
-const bookSearchSchema = require('../schemas/bookSearch.json');
 
 const router = express.Router();
 
