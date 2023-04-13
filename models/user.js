@@ -127,14 +127,15 @@ class User {
 
 		if (!user) throw new NotFoundError(`No user: ${username}`);
 
-		const userBookmarksRes = await db.query(
-			`SELECT b.book_id
-        FROM bookmarks AS b
-        WHERE b.username = $1`,
+		const bookmarkRes = await db.query(
+			`SELECT book_id, username
+        FROM bookmarks
+        WHERE username = $1`,
 			[ username ]
 		);
 
-		user.bookmarks = userBookmarksRes.rows.map((b) => b.book_id);
+		user.bookmarks = bookmarkRes.rows;
+
 		return user;
 	}
 

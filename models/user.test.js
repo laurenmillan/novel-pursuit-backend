@@ -138,7 +138,12 @@ describe('get', function() {
 			lastName: 'U1L',
 			email: 'user1@user.com',
 			isAdmin: false,
-			bookmarks: []
+			bookmarks: [
+				{
+					username: 'u1',
+					book_id: 1
+				}
+			]
 		});
 	});
 
