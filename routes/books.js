@@ -85,7 +85,7 @@ router.get('/:id', async function(req, res, next) {
 router.delete('/:username/bookmarks/:book_id', ensureCorrectUserOrAdmin, async function(req, res, next) {
 	try {
 		const bookId = +req.params.book_id;
-		await Book.removeBook(req.params.username, bookId);
+		await Book.removeBookmark(req.params.username, bookId);
 		return res.json({ removed: bookId });
 	} catch (err) {
 		return next(err);

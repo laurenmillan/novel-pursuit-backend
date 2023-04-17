@@ -50,7 +50,7 @@ class Book {
 
 	static async findAll({ title, author_name, isbn } = {}) {
 		let query = `SELECT id, title, author_name, by_statement, publish_date, isbn, description, cover_url
-                FROM books`;
+            FROM books`;
 		let whereExpressions = [];
 		let queryValues = [];
 
@@ -65,8 +65,8 @@ class Book {
 		}
 
 		if (isbn !== undefined) {
-			queryValues.push(`${isbn}`);
-			whereExpressions.push(`isbn = $${queryValues.length}`);
+			queryValues.push(`%${isbn}%`);
+			whereExpressions.push(`isbn::text ILIKE $${queryValues.length}`);
 		}
 
 		if (whereExpressions.length > 0) {
@@ -89,8 +89,8 @@ class Book {
 	static async get(id) {
 		const result = await db.query(
 			`SELECT id, title, author_name, by_statement, publish_date, isbn, description, cover_url
-          FROM books
-          WHERE id = $1`,
+        FROM books
+        WHERE id = $1`,
 			[ id ]
 		);
 
@@ -115,10 +115,10 @@ class Book {
 	static async search(query) {
 		const booksRes = await db.query(
 			`SELECT id, title, author_name, by_statement, publish_date, isbn, description, cover_url
-        FROM books
-        WHERE title ILIKE $1
-          OR author_name ILIKE $1
-          OR isbn = $1`,
+    FROM books
+    WHERE title ILIKE $1
+    OR author_name ILIKE $1
+    OR isbn::text ILIKE $1`, // allow for partial matches
 			[ `%${query}%` ]
 		);
 		return booksRes.rows;
@@ -174,15 +174,16 @@ class Book {
         RETURNING id`,
 			[ id ]
 		);
-		const book = result.rows[0];
+		const deletedBook = result.rows[0];
 
-		if (!book) throw new NotFoundError(`No book: ${id}`);
+		if (!deletedBook) throw new NotFoundError(`No book: ${id}`);
 	}
 
-	/** Save a book for a user: (username, bookId) => undefined
- *
- * Throws NotFoundError if either user or book not found.
- **/
+	/** 
+	* Save a book for a user: (username, bookId) => undefined
+
+	* Throws NotFoundError if either user or book not found.
+	**/
 
 	static async addBookToUser(username, bookId) {
 		const preCheck = await db.query(`SELECT 1 FROM users WHERE username=$1`, [ username ]);
@@ -200,12 +201,35 @@ class Book {
 		);
 	}
 
-	/** Remove a saved book for a user: (username, bookId) => undefined
- *
- * Throws NotFoundError if not found.
- **/
+	/** Retrieves all books that are bookmarked by specific users.
+	* 
+	* Throws NotFoundError if not found.
+	*/
 
-	static async removeBook(username, bookId) {
+	static async getBooksByUser(username) {
+		const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [ username ]);
+
+		if (userRes.rows.length === 0) {
+			throw new NotFoundError(`No such user: ${username}`);
+		}
+
+		const bookRes = await db.query(
+			`SELECT b.*
+    FROM books AS b
+    JOIN bookmarks AS bm ON b.id = bm.book_id
+    WHERE bm.username = $1`,
+			[ username ]
+		);
+
+		return bookRes.rows;
+	}
+
+	/** Remove a saved bookmark for a user: (username, bookId) => undefined
+	*
+	* Throws NotFoundError if not found.
+	**/
+
+	static async removeBookmark(username, bookId) {
 		const result = await db.query(
 			`DELETE FROM bookmarks
         WHERE username = $1 AND book_id = $2
