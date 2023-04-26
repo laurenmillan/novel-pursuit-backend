@@ -122,7 +122,7 @@ router.delete('/:username', ensureCorrectUserOrAdmin, async function(req, res, n
 
 router.post('/:username/books/:id', ensureCorrectUserOrAdmin, async function(req, res, next) {
 	try {
-		const bookId = +req.params.id;
+		const bookId = req.params.id;
 		await User.saveBook(req.params.username, bookId);
 		return res.json({ saved: bookId });
 	} catch (err) {
