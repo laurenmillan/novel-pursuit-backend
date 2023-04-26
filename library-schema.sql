@@ -22,7 +22,7 @@ CREATE TABLE books (
 CREATE TABLE bookmarks (
     username VARCHAR(25)
         REFERENCES users ON DELETE CASCADE,
-    primary_isbn TEXT,
-    FOREIGN KEY (primary_isbn) REFERENCES books (isbn[1]) ON DELETE CASCADE,
-    PRIMARY KEY (username, primary_isbn)
+    book_id TEXT
+        REFERENCES books ON DELETE CASCADE,
+    PRIMARY KEY (username, book_id)
 );
