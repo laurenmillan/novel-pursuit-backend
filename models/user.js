@@ -202,11 +202,11 @@ class User {
 
 	/** Save book for user's bookmarks: update db, returns undefined.
    *
-   * - username: username save book
+   * - username: username saving a book
    * - bookId: book id
    **/
 
-	static async bookmarkBook(username, bookId) {
+	static async saveBook(username, bookId) {
 		const preCheck = await db.query(
 			`SELECT id
           FROM books
