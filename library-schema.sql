@@ -3,7 +3,8 @@ CREATE TABLE users (
     password TEXT NOT NULL,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    email TEXT NOT NULL CHECK (email ~* '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'), 
+    email TEXT NOT NULL
+    CHECK (position('@' IN email) > 1), 
     is_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
@@ -21,7 +22,7 @@ CREATE TABLE books (
 CREATE TABLE bookmarks (
     username VARCHAR(25)
         REFERENCES users ON DELETE CASCADE,
-    book_id INTEGER
+    book_id TEXT
         REFERENCES books ON DELETE CASCADE,
     PRIMARY KEY (username, book_id)
 );
