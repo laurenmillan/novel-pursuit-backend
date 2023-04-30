@@ -185,44 +185,48 @@ class Book {
 	* Throws NotFoundError if either user or book not found.
 	**/
 
-	static async addBookToUser(username, bookId) {
-		const preCheck = await db.query(`SELECT 1 FROM users WHERE username=$1`, [ username ]);
-		const user = preCheck.rows[0];
-		if (!user) throw new NotFoundError(`No user: ${username}`);
+	//code is redundant, you alreadty have this method in the user model
 
-		const preCheck2 = await db.query(`SELECT 1 FROM books WHERE id=$1`, [ bookId ]);
-		const book = preCheck2.rows[0];
-		if (!book) throw new NotFoundError(`No book: ${bookId}`);
+	// static async addBookToUser(username, bookId) {
+	// 	const preCheck = await db.query(`SELECT 1 FROM users WHERE username=$1`, [ username ]);
+	// 	const user = preCheck.rows[0];
+	// 	if (!user) throw new NotFoundError(`No user: ${username}`);
 
-		await db.query(
-			`INSERT INTO bookmarks (username, book_id)
-        VALUES ($1, $2)`,
-			[ username, bookId ]
-		);
-	}
+	// 	const preCheck2 = await db.query(`SELECT 1 FROM books WHERE id=$1`, [ bookId ]);
+	// 	const book = preCheck2.rows[0];
+	// 	if (!book) throw new NotFoundError(`No book: ${bookId}`);
+
+	// 	await db.query(
+	// 		`INSERT INTO bookmarks (username, book_id)
+	//     VALUES ($1, $2)`,
+	// 		[ username, bookId ]
+	// 	);
+	// }
 
 	/** Retrieves all books that are bookmarked by specific users.
 	* 
 	* Throws NotFoundError if not found.
 	*/
 
-	static async getBooksByUser(username) {
-		const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [ username ]);
+	//code is redundant, you alreadty have this method in the user model
 
-		if (userRes.rows.length === 0) {
-			throw new NotFoundError(`No such user: ${username}`);
-		}
+	// static async getBooksByUser(username) {
+	// 	const userRes = await db.query(`SELECT * FROM users WHERE username = $1`, [ username ]);
 
-		const bookRes = await db.query(
-			`SELECT b.*
-    FROM books AS b
-    JOIN bookmarks AS bm ON b.id = bm.book_id
-    WHERE bm.username = $1`,
-			[ username ]
-		);
+	// 	if (userRes.rows.length === 0) {
+	// 		throw new NotFoundError(`No such user: ${username}`);
+	// 	}
 
-		return bookRes.rows;
-	}
+	// 	const bookRes = await db.query(
+	// 		`SELECT b.*
+	// FROM books AS b
+	// JOIN bookmarks AS bm ON b.id = bm.book_id
+	// WHERE bm.username = $1`,
+	// 		[ username ]
+	// 	);
+
+	// 	return bookRes.rows;
+	// }
 
 	/** Remove a saved bookmark for a user: (username, bookId) => undefined
 	*
