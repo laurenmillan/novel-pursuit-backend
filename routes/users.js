@@ -120,7 +120,7 @@ router.delete('/:username', ensureCorrectUserOrAdmin, async function(req, res, n
  * Authorization required: admin or same-user-as-:username
  * */
 
-router.post('/:username/books/:id', ensureCorrectUserOrAdmin, async function(req, res, next) {
+router.post('/:username/books/works/:id', ensureCorrectUserOrAdmin, async function(req, res, next) {
 	try {
 		const bookId = req.params.id;
 		await User.saveBook(req.params.username, bookId);

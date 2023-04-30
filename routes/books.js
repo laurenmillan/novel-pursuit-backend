@@ -82,7 +82,7 @@ router.get('/:id', async function(req, res, next) {
  * Authorization required: admin or same-user-as-:username
  **/
 
-router.delete('/:username/bookmarks/:book_id', ensureCorrectUserOrAdmin, async function(req, res, next) {
+router.delete('/:username/books/works/:book_id', ensureCorrectUserOrAdmin, async function(req, res, next) {
 	try {
 		const bookId = +req.params.book_id;
 		await Book.removeBookmark(req.params.username, bookId);
