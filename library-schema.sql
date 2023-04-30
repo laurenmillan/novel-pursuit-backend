@@ -8,21 +8,22 @@ CREATE TABLE users (
     is_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE books (
-    id SERIAL PRIMARY KEY,
-    title TEXT,
-    author_name TEXT,
-    by_statement TEXT,
-    publish_date DATE,
-    isbn TEXT[],
-    description TEXT,
-    cover_url TEXT
-);
+--We do not need to store book details in local DB, since it's being fetched from Open Library API
+
+-- CREATE TABLE books (
+--     id SERIAL PRIMARY KEY,
+--     title TEXT,
+--     author_name TEXT,
+--     by_statement TEXT,
+--     publish_date DATE,
+--     isbn TEXT[],
+--     description TEXT,
+--     cover_url TEXT
+-- );
 
 CREATE TABLE bookmarks (
     username VARCHAR(25)
         REFERENCES users ON DELETE CASCADE,
-    book_id INTEGER
-        REFERENCES books ON DELETE CASCADE,
+    book_id VARCHAR(50) NOT NULL,
     PRIMARY KEY (username, book_id)
 );
