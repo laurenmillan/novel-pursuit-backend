@@ -203,33 +203,33 @@ class User {
 	/** Save book for user's bookmarks: update db, returns undefined.
    *
    * - username: username saving a book
-   * - bookId: book id
+   * - checks for existence of the user and for the existence of teh book
    **/
 
 	static async saveBook(username, bookId) {
 		const preCheck = await db.query(
-			`SELECT id
-          FROM books
-          WHERE id = $1`,
-			[ bookId ]
-		);
-		const book = preCheck.rows[0];
-
-		if (!book) throw new NotFoundError(`No book: ${bookId}`);
-
-		const preCheck2 = await db.query(
 			`SELECT username
-          FROM users
-          WHERE username = $1`,
+        FROM users
+        WHERE username = $1`,
 			[ username ]
 		);
-		const user = preCheck2.rows[0];
+		const user = preCheck.rows[0];
 
 		if (!user) throw new NotFoundError(`No username: ${username}`);
 
+		const preCheck2 = await db.query(
+			`SELECT id
+        FROM books
+        WHERE id = $1`,
+			[ bookId ]
+		);
+		const book = preCheck2.rows[0];
+
+		if (!book) throw new NotFoundError(`No book: ${bookId}`);
+
 		await db.query(
 			`INSERT INTO bookmarks (book_id, username)
-          VALUES ($1, $2)`,
+        VALUES ($1, $2)`,
 			[ bookId, username ]
 		);
 	}
