@@ -24,6 +24,6 @@ CREATE TABLE users (
 CREATE TABLE bookmarks (
     username VARCHAR(25)
         REFERENCES users ON DELETE CASCADE,
-    book_id VARCHAR(50) NOT NULL,
+    book_id TEXT NOT NULL,
     PRIMARY KEY (username, book_id)
 );
