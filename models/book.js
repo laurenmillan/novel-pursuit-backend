@@ -16,14 +16,14 @@ class Book {
 	static async create(data) {
 		const result = await db.query(
 			`INSERT INTO books (title,
-                            author_name,
-                            by_statement,
-                            publish_date,
-                            isbn,
-                            description,
-                            cover_url)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-        RETURNING id, title, author_name, by_statement, publish_date, isbn, description, cover_url`,
+                author_name,
+                by_statement,
+                publish_date,
+                isbn,
+                description,
+                cover_url)
+			VALUES ($1, $2, $3, $4, $5, $6, $7)
+			RETURNING id, title, author_name, by_statement, publish_date, isbn, description, cover_url`,
 			[
 				data.title,
 				data.author_name,
@@ -89,8 +89,8 @@ class Book {
 	static async get(id) {
 		const result = await db.query(
 			`SELECT id, title, author_name, by_statement, publish_date, isbn, description, cover_url
-        FROM books
-        WHERE id = $1`,
+				FROM books
+				WHERE id = $1`,
 			[ id ]
 		);
 
@@ -115,10 +115,10 @@ class Book {
 	static async search(query) {
 		const booksRes = await db.query(
 			`SELECT id, title, author_name, by_statement, publish_date, isbn, description, cover_url
-    FROM books
-    WHERE title ILIKE $1
-    OR author_name ILIKE $1
-    OR isbn::text ILIKE $1`, // allow for partial matches
+				FROM books
+				WHERE title ILIKE $1
+				OR author_name ILIKE $1
+				OR isbn::text ILIKE $1`, // allow for partial matches
 			[ `%${query}%` ]
 		);
 		return booksRes.rows;
@@ -169,9 +169,9 @@ class Book {
 	static async remove(id) {
 		const result = await db.query(
 			`DELETE
-        FROM books
-        WHERE id = $1
-        RETURNING id`,
+			FROM books
+			WHERE id = $1
+			RETURNING id`,
 			[ id ]
 		);
 		const deletedBook = result.rows[0];
@@ -196,7 +196,7 @@ class Book {
 
 		await db.query(
 			`INSERT INTO bookmarks (username, book_id)
-	    VALUES ($1, $2)`,
+			VALUES ($1, $2)`,
 			[ username, bookId ]
 		);
 	}
@@ -215,9 +215,9 @@ class Book {
 
 		const bookRes = await db.query(
 			`SELECT b.*
-	FROM books AS b
-	JOIN bookmarks AS bm ON b.id = bm.book_id
-	WHERE bm.username = $1`,
+				FROM books AS b
+				JOIN bookmarks AS bm ON b.id = bm.book_id
+				WHERE bm.username = $1`,
 			[ username ]
 		);
 
@@ -232,8 +232,8 @@ class Book {
 	static async removeBookmark(username, bookId) {
 		const result = await db.query(
 			`DELETE FROM bookmarks
-        WHERE username = $1 AND book_id = $2
-        RETURNING book_id`,
+				WHERE username = $1 AND book_id = $2
+				RETURNING book_id`,
 			[ username, bookId ]
 		);
 		const book = result.rows[0];

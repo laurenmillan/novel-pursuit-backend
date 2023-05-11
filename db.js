@@ -1,5 +1,7 @@
 'use strict';
+
 /** Database setup for library. */
+
 const { Client } = require('pg');
 const { getDatabaseUri } = require('./config');
 

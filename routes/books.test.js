@@ -19,8 +19,6 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/************************************** POST /books */
-
 describe('POST /books', function() {
 	test('unauth for users', async function() {
 		const resp = await request(app)
@@ -65,8 +63,6 @@ describe('POST /books', function() {
 	});
 });
 
-/************************************** GET /books/:id */
-
 describe('GET /books/:id', function() {
 	test('works for anon', async function() {
 		const resp = await request(app).get(`/books/1`);
@@ -89,8 +85,6 @@ describe('GET /books/:id', function() {
 		expect(resp.statusCode).toEqual(404);
 	});
 });
-
-/************************************** DELETE /:username/bookmarks/:book_id */
 
 describe('DELETE /:username/bookmarks/:book_id', function() {
 	test('not found for no such book', async function() {

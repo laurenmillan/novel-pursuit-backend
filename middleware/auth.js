@@ -27,9 +27,12 @@ function authenticateJWT(req, res, next) {
 	}
 }
 
-/** Middleware to use when they must be logged in.
+/** Middleware to enforce user authentication.
  *
- * If not, raises Unauthorized.
+ * Use this middleware when a route should only be accessible to users who are logged in.
+ * A user is considered to be logged in if there is a 'user' property on 'res.locals'.
+ *
+ * If a user is not logged in, an UnauthorizedError is thrown.
  */
 
 function ensureLoggedIn(req, res, next) {
@@ -41,9 +44,12 @@ function ensureLoggedIn(req, res, next) {
 	}
 }
 
-/** Middleware to use when they be logged in as an admin user.
+/** Middleware to enforce admin user authentication.
  *
- *  If not, raises Unauthorized.
+ * Use this middleware when a route should only be accessible to users who are logged in as an admin.
+ * A user is considered to be an admin if there is a 'user' property on 'res.locals' and 'user.isAdmin' is true.
+ *
+ * If a user is not logged in or not an admin, an UnauthorizedError is thrown.
  */
 
 function ensureAdmin(req, res, next) {
@@ -57,10 +63,15 @@ function ensureAdmin(req, res, next) {
 	}
 }
 
-/** Middleware to use when they must provide a valid token & be user matching
- *  username provided as route param.
+/** Middleware to enforce user authentication and validate token.
  *
- *  If not, raises Unauthorized.
+ * Use this middleware when a route requires the user to be logged in and the provided token must correspond to the user matching the username provided 
+ * 		as a route parameter. The user must either be the same user as the one specified in the route parameter, or an admin.
+ *
+ * A user is considered authenticated if there is a 'user' property on 'res.locals' and either 'user.isAdmin' is true 
+ * 		or 'user.username' equals the 'username' route parameter.
+ *
+ * If the user is not authenticated or the token does not match, an UnauthorizedError is thrown.
  */
 
 function ensureCorrectUserOrAdmin(req, res, next) {

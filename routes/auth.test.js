@@ -11,8 +11,6 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/************************************** POST /auth/token */
-
 describe('POST /auth/token', function() {
 	test('works', async function() {
 		const resp = await request(app).post('/auth/token').send({
@@ -56,8 +54,6 @@ describe('POST /auth/token', function() {
 		expect(resp.statusCode).toEqual(400);
 	});
 });
-
-/************************************** POST /auth/register */
 
 describe('POST /auth/register', function() {
 	test('works for anon', async function() {
