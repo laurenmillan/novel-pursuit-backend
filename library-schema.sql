@@ -10,17 +10,6 @@ CREATE TABLE users (
 
 --We do not need to store book details in local DB, since it's being fetched from Open Library API
 
--- CREATE TABLE books (
---     id SERIAL PRIMARY KEY,
---     title TEXT,
---     author_name TEXT,
---     by_statement TEXT,
---     publish_date DATE,
---     isbn TEXT[],
---     description TEXT,
---     cover_url TEXT
--- );
-
 CREATE TABLE bookmarks (
     username VARCHAR(25)
         REFERENCES users ON DELETE CASCADE,
