@@ -21,13 +21,13 @@ class User {
 		// try to find the user first
 		const result = await db.query(
 			`SELECT username,
-                  password,
-                  first_name AS "firstName",
-                  last_name AS "lastName",
-                  email,
-                  is_admin AS "isAdmin"
-          FROM users
-          WHERE username = $1`,
+                password,
+                first_name AS "firstName",
+                last_name AS "lastName",
+                email,
+                is_admin AS "isAdmin"
+			FROM users
+			WHERE username = $1`,
 			[ username ]
 		);
 
@@ -55,8 +55,8 @@ class User {
 	static async register({ username, password, firstName, lastName, email, isAdmin }) {
 		const duplicateCheck = await db.query(
 			`SELECT username
-          FROM users
-          WHERE username = $1`,
+			FROM users
+			WHERE username = $1`,
 			[ username ]
 		);
 
@@ -68,14 +68,14 @@ class User {
 
 		const result = await db.query(
 			`INSERT INTO users
-          (username,
-            password,
-            first_name,
-            last_name,
-            email,
-            is_admin)
-          VALUES ($1, $2, $3, $4, $5, $6)
-          RETURNING username, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
+				(username,
+				password,
+				first_name,
+				last_name,
+				email,
+				is_admin)
+			VALUES ($1, $2, $3, $4, $5, $6)
+			RETURNING username, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
 			[ username, hashedPassword, firstName, lastName, email, isAdmin ]
 		);
 
@@ -92,12 +92,12 @@ class User {
 	static async findAll() {
 		const result = await db.query(
 			`SELECT username,
-                  first_name AS "firstName",
-                  last_name AS "lastName",
-                  email,
-                  is_admin AS "isAdmin"
-          FROM users
-          ORDER BY username`
+				first_name AS "firstName",
+				last_name AS "lastName",
+				email,
+				is_admin AS "isAdmin"
+				FROM users
+			ORDER BY username`
 		);
 
 		return result.rows;
@@ -114,12 +114,12 @@ class User {
 	static async get(username) {
 		const userRes = await db.query(
 			`SELECT username,
-        first_name AS "firstName",
-        last_name AS "lastName",
-        email,
-        is_admin AS "isAdmin"
-          FROM users
-          WHERE username = $1`,
+				first_name AS "firstName",
+				last_name AS "lastName",
+				email,
+				is_admin AS "isAdmin"
+        FROM users
+        WHERE username = $1`,
 			[ username ]
 		);
 
@@ -169,13 +169,13 @@ class User {
 		const usernameVarIdx = '$' + (values.length + 1);
 
 		const querySql = `UPDATE users 
-                      SET ${setCols} 
-                      WHERE username = ${usernameVarIdx} 
-                      RETURNING username,
-                                first_name AS "firstName",
-                                last_name AS "lastName",
-                                email,
-                                is_admin AS "isAdmin"`;
+            SET ${setCols} 
+            WHERE username = ${usernameVarIdx} 
+            RETURNING username,
+                first_name AS "firstName",
+                last_name AS "lastName",
+                email,
+                is_admin AS "isAdmin"`;
 		const result = await db.query(querySql, [ ...values, username ]);
 		const user = result.rows[0];
 
@@ -190,9 +190,9 @@ class User {
 	static async remove(username) {
 		let result = await db.query(
 			`DELETE
-          FROM users
-          WHERE username = $1
-          RETURNING username`,
+			FROM users
+			WHERE username = $1
+			RETURNING username`,
 			[ username ]
 		);
 		const user = result.rows[0];
@@ -209,8 +209,8 @@ class User {
 	static async saveBook(username, bookId) {
 		const preCheck = await db.query(
 			`SELECT username
-				FROM users
-				WHERE username = $1`,
+			FROM users
+			WHERE username = $1`,
 			[ username ]
 		);
 		const user = preCheck.rows[0];
@@ -219,7 +219,7 @@ class User {
 
 		await db.query(
 			`INSERT INTO bookmarks (book_id, username)
-				VALUES ($1, $2)`,
+			VALUES ($1, $2)`,
 			[ bookId, username ]
 		);
 	}
@@ -232,8 +232,8 @@ class User {
 	static async getBookmarks(username) {
 		const result = await db.query(
 			`SELECT b.book_id
-    FROM bookmarks AS b
-    WHERE b.username = $1`,
+				FROM bookmarks AS b
+				WHERE b.username = $1`,
 			[ username ]
 		);
 		return result.rows.map((row) => row.book_id);
