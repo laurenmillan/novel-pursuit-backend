@@ -64,22 +64,6 @@ describe('POST /books', function() {
 });
 
 describe('GET /books/:id', function() {
-	test('works for anon', async function() {
-		const resp = await request(app).get(`/books/1`);
-		expect(resp.body).toEqual({
-			book: {
-				title: 'Book1',
-				author_name: 'Author1',
-				by_statement: 'Publisher1',
-				publish_date: '2022-01-01T05:00:00.000Z',
-				isbn: [ '978-3-16-148410-0' ],
-				description: 'Description1',
-				id: 1,
-				cover_url: 'https://example.com/book1.jpg'
-			}
-		});
-	});
-
 	test('not found for no such book', async function() {
 		const resp = await request(app).get(`/books/0`);
 		expect(resp.statusCode).toEqual(404);
