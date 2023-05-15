@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "http://example.com/bookNew.schema.json",
+	"type": "object",
+	"properties": {
+		"title": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 50
+		},
+		"author_name": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 50
+		},
+		"by_statement": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 50
+		},
+		"publish_date": {
+			"type": "string",
+			"format": "date"
+		},
+		"isbn": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"pattern": "^[0-9]{10}$|^[0-9]{13}$"
+			}
+		},
+		"description": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 1000
+		},
+		"cover_url": {
+			"type": "string",
+			"format": "uri"
+		}
+	},
+	"additionalProperties": false,
+	"required": [ "title", "author_name", "by_statement", "publish_date", "isbn", "description", "cover_url" ]
+}

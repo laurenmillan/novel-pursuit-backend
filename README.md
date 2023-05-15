@@ -1,6 +1,6 @@
-# Backend Open Library App
+# Backend Open Library App 
 
-This is a Node.js and Express backend app that provides RESTful API for interacting with a database. The app is built using the following:
+This is a Node.js and Express backend app that provides RESTful API for interacting with a database. The app follows the CRUD (Create, Read, Update, Delete) paradigm, allowing users to create, read, update, and delete book data from the database. The app is built using the following:
 
 * Node.js
 
@@ -8,27 +8,46 @@ This is a Node.js and Express backend app that provides RESTful API for interact
 
 * PostgreSQL
 
-## Installation
+## Installation 💻
 
 Use the package manager [npm](https://www.npmjs.com) to install the app.
 
 ```bash
+git clone https://github.com/mlauren77/capstone-backend.git
+```
+```bash
 npm install
 ```
 ```bash
-npm start
+node server.js
 ```
 
-Open http://localhost:3000 to view it in your browser.
+Open http://localhost:3001 to view it in your browser.
+
+## Testing
+
+To run the automated tests, use the folowing command:
+
+```bash
+npm test
+```
+
+## Functionality
+
+* A user can search the app to locate books.
+
+* A user can signup and login to the app.
+
+* A user can view their bookmarked books, and remove any bookmarks they no longer want to keep.
 
 ## Database
 
-The app uses PostgreSQL as its database.
+The app uses PostgreSQL as its database. 
 
 ## API
 
-You can find the Open Library API here [Open Library](https://openlibrary.org/dev/docs/api/search)
+You can find the Open Library API documentation at [Open Library](https://openlibrary.org/dev/docs/api/search)
 
 ## Contributing
 
-Contributions are welcome! 
+Contributions are welcome! Please follow the [GitHub flow](https://guides.github.com/introduction/flow/) when making contributions.
